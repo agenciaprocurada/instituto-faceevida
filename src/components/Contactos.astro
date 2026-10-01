@@ -1,0 +1,31 @@
+---
+// Par de botões de contacto (WhatsApp + chamada), usado em vários pontos da página.
+import Icone from './Icone.astro';
+import { contacto, linkTelefone, linkWhatsApp } from '../config';
+
+interface Props {
+  local: string;
+  mensagem: string;
+  empilhado?: boolean;
+}
+
+const { local, mensagem, empilhado = false } = Astro.props;
+---
+
+<div class:list={['contactos', { 'contactos--empilhado': empilhado }]}>
+  <a
+    class="botao botao--ouro"
+    href={linkWhatsApp(mensagem)}
+    target="_blank"
+    rel="noopener"
+    data-cta="whatsapp"
+    data-local={local}
+  >
+    <Icone nome="whatsapp" />
+    Falar pelo WhatsApp
+  </a>
+  <a class="botao botao--linha" href={linkTelefone} data-cta="chamada" data-local={local}>
+    <Icone nome="telefone" />
+    Ligar {contacto.telefone}
+  </a>
+</div>

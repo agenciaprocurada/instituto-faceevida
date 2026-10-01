@@ -1,0 +1,475 @@
+---
+import { Image } from 'astro:assets';
+import '@fontsource-variable/bodoni-moda/opsz.css';
+import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+import '@fontsource-variable/jost';
+import '../styles/global.css';
+
+import Icone from '../components/Icone.astro';
+import Contactos from '../components/Contactos.astro';
+import { contacto, morada, linkTelefone, linkWhatsApp, numeroProvisorio } from '../config';
+
+import logo from '../assets/logo-face-e-vida-fundo-escuro.png';
+import fotoAlinhadores from '../assets/alinhadores.jpg';
+import fotoImplantes from '../assets/implantes.jpg';
+import fotoFacetas from '../assets/facetas.jpg';
+import fotoHof from '../assets/hof.jpg';
+
+if (numeroProvisorio) {
+  console.warn('\n[AVISO] O telefone e o WhatsApp ainda são provisórios. Trocar em src/config.ts\n');
+}
+
+const mensagemGeral = 'Olá! Gostava de marcar uma consulta no Instituto Face e Vida.';
+
+const servicos = [
+  {
+    id: 'implantes',
+    nome: 'Implantes dentários',
+    lema: 'Confiança de volta',
+    descricao: 'Para repor um ou vários dentes em falta, com um plano feito para o seu caso.',
+    beneficios: ['Mais qualidade de vida', 'Resultados duradouros', 'Acompanhamento especializado'],
+    acao: 'Perguntar sobre implantes',
+    mensagem: 'Olá! Gostava de saber mais sobre implantes dentários e marcar uma consulta.',
+    foto: fotoImplantes,
+    alt: 'Sorriso e modelo de um implante dentário',
+    foco: '50% 40%',
+    focoMovel: '50% 25%',
+  },
+  {
+    id: 'alinhadores',
+    nome: 'Alinhadores invisíveis',
+    lema: 'Ortodontia discreta',
+    descricao: 'Alinham os dentes sem aparelho fixo, com o tratamento planeado digitalmente.',
+    beneficios: ['Discretos', 'Confortáveis', 'Planeamento digital'],
+    acao: 'Perguntar sobre alinhadores',
+    mensagem: 'Olá! Gostava de saber mais sobre alinhadores invisíveis e marcar uma consulta.',
+    foto: fotoAlinhadores,
+    alt: 'Mulher a sorrir com um alinhador transparente na mão',
+    foco: '50% 12%',
+    focoMovel: '50% 36%',
+  },
+  {
+    id: 'facetas',
+    nome: 'Facetas',
+    lema: 'Estética e naturalidade',
+    descricao: 'Corrigem a cor e a forma dos dentes, desenhadas à medida do seu sorriso.',
+    beneficios: ['Beleza natural', 'Sorriso personalizado', 'Resultados duradouros'],
+    acao: 'Perguntar sobre facetas',
+    mensagem: 'Olá! Gostava de saber mais sobre facetas e marcar uma consulta.',
+    foto: fotoFacetas,
+    alt: 'Faceta dentária junto a um sorriso',
+    foco: '50% 22%',
+    focoMovel: '50% 34%',
+  },
+  {
+    id: 'hof',
+    nome: 'Harmonização orofacial',
+    lema: 'A sua melhor versão',
+    descricao: 'Procedimentos que equilibram os traços do rosto, respeitando a sua expressão.',
+    beneficios: ['Traços mais equilibrados', 'Beleza natural', 'Autoestima em alta'],
+    acao: 'Perguntar sobre harmonização',
+    mensagem: 'Olá! Gostava de saber mais sobre harmonização orofacial e marcar uma consulta.',
+    foto: fotoHof,
+    alt: 'Perfil de um rosto feminino',
+    foco: '38% 50%',
+    focoMovel: '50% 43%',
+  },
+];
+
+const passos = [
+  {
+    titulo: 'Fale connosco',
+    texto: 'Envie uma mensagem pelo WhatsApp ou ligue. Diga-nos o que procura e quando tem disponibilidade.',
+  },
+  {
+    titulo: 'Consulta de avaliação',
+    texto: 'Marcamos um horário que lhe dê jeito. Na consulta, avaliamos o seu caso com calma.',
+  },
+  {
+    titulo: 'O seu plano',
+    texto: 'Explicamos as opções de tratamento e esclarecemos as suas dúvidas antes de decidir.',
+  },
+];
+
+const duvidas = [
+  {
+    pergunta: 'Como marco uma consulta?',
+    resposta:
+      'Por WhatsApp ou por telefone. Indique o tratamento que lhe interessa e a sua disponibilidade, e nós tratamos do resto.',
+  },
+  {
+    pergunta: 'Não sei qual é o tratamento certo para mim. Posso marcar na mesma?',
+    resposta:
+      'Sim. A consulta de avaliação serve para isso: perceber o seu caso e indicar as opções que fazem sentido.',
+  },
+  {
+    pergunta: 'Quanto custa?',
+    resposta:
+      'Depende do tratamento e de cada caso. Fale connosco e explicamos como funcionam a avaliação e o orçamento.',
+  },
+  {
+    pergunta: 'Onde fica o instituto?',
+    resposta: `Na ${morada.rua}, no ${morada.cidade} (${morada.codigoPostal}).`,
+  },
+];
+
+const titulo = 'Instituto Face e Vida · Implantes, alinhadores, facetas e harmonização orofacial no Porto';
+const descricao =
+  'Implantes dentários, alinhadores invisíveis, facetas e harmonização orofacial no Porto. Marque a sua consulta por WhatsApp ou telefone.';
+
+const dadosEstruturados = {
+  '@context': 'https://schema.org',
+  '@type': 'Dentist',
+  name: 'Instituto Face e Vida',
+  description: descricao,
+  ...(Astro.site ? { url: Astro.site.href, image: new URL('/partilha.jpg', Astro.site).href } : {}),
+  ...(numeroProvisorio ? {} : { telephone: contacto.telefone }),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: morada.rua,
+    postalCode: morada.codigoPostal,
+    addressLocality: morada.cidade,
+    addressCountry: 'PT',
+  },
+};
+---
+
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{titulo}</title>
+    <meta name="description" content={descricao} />
+    <meta name="theme-color" content="#0c0a07" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descricao} />
+    {Astro.site && <meta property="og:image" content={new URL('/partilha.jpg', Astro.site).href} />}
+    <script type="application/ld+json" set:html={JSON.stringify(dadosEstruturados)} />
+  </head>
+  <body>
+    <a class="saltar" href="#conteudo">Saltar para o conteúdo</a>
+    <header class="topo">
+      <div class="topo__interior envolve">
+        <a class="topo__logo" href="/" aria-label="Instituto Face e Vida">
+          <Image src={logo} alt="Instituto Face e Vida" width={236} loading="eager" />
+        </a>
+        <nav class="navegacao" aria-label="Navegação principal">
+          <a href="#tratamentos">Tratamentos</a>
+          <a href="#marcar">Como marcar</a>
+          <a href="#duvidas">Dúvidas</a>
+        </nav>
+        <div class="topo__contacto">
+          <a class="botao botao--ouro botao--pequeno" href="#marcar">
+            Marcar consulta
+            <Icone nome="seta" tamanho={18} />
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="conteudo" tabindex="-1">
+      <section class="abertura">
+        <svg class="abertura__fio" viewBox="0 0 1440 760" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="fio-ouro" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#f0c25a" stop-opacity="0"></stop>
+              <stop offset="0.18" stop-color="#f0c25a" stop-opacity="0.9"></stop>
+              <stop offset="0.7" stop-color="#f7dc8e"></stop>
+              <stop offset="1" stop-color="#f0c25a" stop-opacity="0.15"></stop>
+            </linearGradient>
+          </defs>
+          <path
+            d="M-40 688 C 260 742, 520 664, 760 700 S 1050 750, 1175 560 S 1275 140, 1480 210"
+            pathLength="1"
+            fill="none"
+            stroke="url(#fio-ouro)"
+            stroke-width="1.4"
+            vector-effect="non-scaling-stroke"></path>
+        </svg>
+
+        <div class="abertura__grelha envolve">
+          <div class="abertura__texto">
+            <p class="sobretitulo" data-entra style="--i:0">
+              Medicina dentária e harmonização orofacial · Porto
+            </p>
+            <h1 data-entra style="--i:1">
+              Mais do que sorrisos, <em>novas histórias.</em>
+            </h1>
+            <p class="abertura__lead" data-entra style="--i:2">
+              Cuidados para o seu sorriso e para o seu rosto, com um plano pensado para si.
+              Conheça os tratamentos e dê o primeiro passo.
+            </p>
+            <div data-entra style="--i:3" data-acoes-abertura>
+              <div class="contactos contactos--abertura">
+                <a class="botao botao--ouro" href={linkWhatsApp(mensagemGeral)} target="_blank" rel="noopener" data-cta="whatsapp" data-local="abertura">
+                  <Icone nome="whatsapp" />
+                  Marcar pelo WhatsApp
+                </a>
+                <a class="botao botao--linha" href="#tratamentos">
+                  Ver tratamentos
+                  <Icone nome="seta" />
+                </a>
+              </div>
+            </div>
+            <a class="abertura__morada" href={morada.mapa} target="_blank" rel="noopener" data-cta="mapa" data-local="abertura" data-entra style="--i:4">
+              <Icone nome="local" tamanho={18} />
+              <span>{morada.rua} · {morada.cidade}</span>
+            </a>
+          </div>
+
+          <div class="abertura__foto" data-entra style="--i:2">
+            <Image
+              src={fotoAlinhadores}
+              alt="Mulher a sorrir com um alinhador transparente na mão"
+              widths={[360, 519]}
+              sizes="(max-width: 860px) min(100vw - 64px, 480px), 400px"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="tratamentos" id="tratamentos">
+        <div class="envolve">
+          <header class="cabecalho" data-revela>
+            <div>
+              <p class="sobretitulo">Tratamentos</p>
+              <h2>O que procura?</h2>
+            </div>
+            <p class="cabecalho__lead">
+              Escolha o tratamento que lhe interessa e pergunte-nos diretamente. Tiramos as suas dúvidas antes
+              de marcar.
+            </p>
+          </header>
+
+          <nav class="atalhos" aria-label="Escolher um tratamento">
+            {servicos.map((s) => <a href={`#${s.id}`}>{s.nome}<Icone nome="seta" tamanho={16} /></a>)}
+          </nav>
+
+          <ul class="grelha-servicos">
+            {
+              servicos.map((s, i) => (
+                <li class="cartao" id={s.id} data-revela style={`--i:${i}`}>
+                  <div class="cartao__foto" style={`--foco:${s.foco}; --foco-movel:${s.focoMovel}`}>
+                    <Image
+                      src={s.foto}
+                      alt={s.alt}
+                      widths={[320, 520]}
+                      sizes="(max-width: 620px) 92vw, (max-width: 1020px) 46vw, 270px"
+                    />
+                  </div>
+                  <p class="cartao__lema">{s.lema}</p>
+                  <h3>{s.nome}</h3>
+                  <p class="cartao__descricao">{s.descricao}</p>
+                  <ul class="cartao__beneficios">
+                    {s.beneficios.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                  <a
+                    class="cartao__acao"
+                    href={linkWhatsApp(s.mensagem)}
+                    target="_blank"
+                    rel="noopener"
+                    data-cta="whatsapp"
+                    data-local="tratamentos"
+                    data-servico={s.id}
+                  >
+                    <Icone nome="whatsapp" tamanho={18} />
+                    {s.acao}
+                    <Icone nome="seta" tamanho={18} />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <section class="marcar" id="marcar">
+        <div class="marcar__grelha envolve">
+          <div data-revela>
+            <p class="sobretitulo sobretitulo--bronze">Como marcar</p>
+            <h2>Três passos até à sua consulta</h2>
+            <ol class="passos">
+              {
+                passos.map((p, i) => (
+                  <li>
+                    <span class="passos__numero" aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <div>
+                      <h3>{p.titulo}</h3>
+                      <p>{p.texto}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+
+          <aside class="onde" id="localizacao" aria-label="Localização e contactos" data-revela>
+            <p class="sobretitulo">Onde estamos</p>
+            <p class="onde__morada">
+              {morada.rua}<br />
+              {morada.codigoPostal} {morada.cidade}
+            </p>
+            <a class="onde__mapa" href={morada.mapa} target="_blank" rel="noopener" data-cta="mapa" data-local="marcar">
+              <Icone nome="local" tamanho={18} />
+              Abrir no Google Maps
+            </a>
+            <Contactos local="marcar" mensagem={mensagemGeral} empilhado />
+          </aside>
+        </div>
+      </section>
+
+      <section class="duvidas" id="duvidas">
+        <div class="duvidas__grelha envolve">
+          <div data-revela>
+            <p class="sobretitulo">Dúvidas frequentes</p>
+            <h2>Antes de marcar</h2>
+          </div>
+          <div class="duvidas__lista" data-revela>
+            {
+              duvidas.map((d, i) => (
+                <details open={i === 0}>
+                  <summary>{d.pergunta}<span class="duvidas__indicador" aria-hidden="true">+</span></summary>
+                  <p>{d.resposta}</p>
+                </details>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="fecho">
+        <div class="fecho__foto" aria-hidden="true">
+          <Image src={fotoHof} alt="" widths={[480, 709]} sizes="(max-width: 860px) 100vw, 50vw" />
+        </div>
+        <div class="fecho__texto envolve" data-revela>
+          <h2>A sua nova história <em>começa com uma conversa.</em></h2>
+          <p>Fale connosco hoje. Respondemos às suas dúvidas e marcamos a consulta.</p>
+          <Contactos local="fecho" mensagem={mensagemGeral} />
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="rodape__grelha envolve">
+        <Image class="rodape__logo" src={logo} alt="Instituto Face e Vida" width={236} />
+        <address>
+          {morada.rua}<br />
+          {morada.codigoPostal} {morada.cidade}<br />
+          <a href={linkTelefone} data-cta="chamada" data-local="rodape">{contacto.telefone}</a>
+          {contacto.custoChamada && <small>({contacto.custoChamada})</small>}
+        </address>
+        <p class="rodape__direitos">© {new Date().getFullYear()} Instituto Face e Vida</p>
+      </div>
+    </footer>
+
+    <nav class="barra" aria-label="Contacto rápido" data-barra hidden inert>
+      <a class="botao botao--linha" href={linkTelefone} data-cta="chamada" data-local="barra">
+        <Icone nome="telefone" />
+        Ligar
+      </a>
+      <a
+        class="botao botao--ouro"
+        href={linkWhatsApp(mensagemGeral)}
+        target="_blank"
+        rel="noopener"
+        data-cta="whatsapp"
+        data-local="barra"
+      >
+        <Icone nome="whatsapp" />
+        Marcar consulta
+      </a>
+    </nav>
+
+    <script>
+      // O conteúdo permanece visível mesmo se o JavaScript não carregar.
+      // Anima apenas blocos abaixo do ecrã e revela-os também ao receber foco.
+      const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if ('IntersectionObserver' in window && !movimentoReduzido.matches) {
+        const observador = new IntersectionObserver((entradas) => {
+          for (const entrada of entradas) {
+            if (!entrada.isIntersecting) continue;
+            entrada.target.classList.remove('aguarda-revela');
+            observador.unobserve(entrada.target);
+          }
+        }, { rootMargin: '0px 0px 40px 0px' });
+        document.querySelectorAll<HTMLElement>('[data-revela]').forEach((el) => {
+          if (el.getBoundingClientRect().top <= window.innerHeight) return;
+          el.classList.add('aguarda-revela');
+          el.addEventListener('focusin', () => el.classList.remove('aguarda-revela'));
+          observador.observe(el);
+        });
+      }
+
+      // Compensa a altura real do cabeçalho ao navegar para uma secção.
+      const topo = document.querySelector<HTMLElement>('.topo');
+      if (topo && 'ResizeObserver' in window) {
+        new ResizeObserver(() => {
+          document.documentElement.style.setProperty('--altura-topo', `${topo.offsetHeight}px`);
+        }).observe(topo);
+      }
+
+      // Esconde a barra junto de outros contactos e retira-a da ordem de tabulação.
+      const acoes = document.querySelector('[data-acoes-abertura]');
+      const barra = document.querySelector<HTMLElement>('[data-barra]');
+      if (acoes && barra && 'IntersectionObserver' in window) {
+        const contactosVisiveis = new Set<Element>();
+        let passou = false;
+        const atualizarBarra = () => {
+          const mostrar = passou && contactosVisiveis.size === 0;
+          barra.hidden = !mostrar;
+          barra.inert = !mostrar;
+        };
+        new IntersectionObserver(([entrada]) => {
+          passou = !entrada.isIntersecting && entrada.boundingClientRect.bottom < 0;
+          atualizarBarra();
+        }).observe(acoes);
+        const observadorContactos = new IntersectionObserver((entradas) => {
+          entradas.forEach((entrada) => {
+            if (entrada.isIntersecting) contactosVisiveis.add(entrada.target);
+            else contactosVisiveis.delete(entrada.target);
+          });
+          atualizarBarra();
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.onde .contactos, .fecho .contactos, .rodape').forEach((el) => observadorContactos.observe(el));
+      }
+
+      // Indica a secção atual na navegação sem alterar o histórico de leitura.
+      if ('IntersectionObserver' in window) {
+        const links = document.querySelectorAll<HTMLAnchorElement>('.navegacao a');
+        const observadorSeccoes = new IntersectionObserver((entradas) => {
+          entradas.forEach((entrada) => {
+            if (!entrada.isIntersecting) return;
+            links.forEach((link) => {
+              if (link.hash === `#${entrada.target.id}`) link.setAttribute('aria-current', 'location');
+              else link.removeAttribute('aria-current');
+            });
+          });
+        }, { rootMargin: '-20% 0px -55% 0px' });
+        document.querySelectorAll('.abertura, #tratamentos, #marcar, #duvidas, .fecho').forEach((el) => observadorSeccoes.observe(el));
+      }
+
+      // Regista os cliques nos contactos (fica pronto para o Google Tag Manager)
+      document.addEventListener('click', (evento) => {
+        const alvo = (evento.target as HTMLElement).closest<HTMLElement>('[data-cta]');
+        if (!alvo) return;
+        const camada = ((window as any).dataLayer ??= []);
+        camada.push({
+          event: 'clique_contacto',
+          canal: alvo.dataset.cta,
+          local: alvo.dataset.local,
+          servico: alvo.dataset.servico ?? '',
+        });
+      });
+    </script>
+  </body>
+</html>

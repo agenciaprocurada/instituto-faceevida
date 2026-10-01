@@ -1,0 +1,17 @@
+{
+  "name": "instituto-face-e-vida",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "imagens": "node scripts/preparar-imagens.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/bodoni-moda": "^5.3.0",
+    "@fontsource-variable/jost": "^5.3.0",
+    "astro": "^7.3.5"
+  }
+}
