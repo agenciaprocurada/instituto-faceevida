@@ -1,13 +1,13 @@
 // Dados de contacto do instituto. É o único sítio onde se trocam os números.
 
 export const contacto = {
-  // TROCAR: número provisório. Formato internacional, só algarismos (351 + número).
-  whatsapp: '351000000000',
-  // TROCAR: número para chamadas, como deve aparecer escrito na página.
-  telefone: '+351 000 000 000',
+  // Formato internacional, só algarismos (351 + número).
+  whatsapp: '351932021938',
+  // Número para chamadas, como deve aparecer escrito na página.
+  telefone: '+351 932 021 938',
   // Em Portugal é obrigatório indicar o custo da chamada junto ao número.
   // Ex.: 'Chamada para a rede móvel nacional' ou 'Chamada para a rede fixa nacional'.
-  custoChamada: '',
+  custoChamada: 'Chamada para a rede móvel nacional',
 };
 
 export const morada = {
